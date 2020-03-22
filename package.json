@@ -1,0 +1,36 @@
+{
+  "name": "statsbot",
+  "version": "1.0.0",
+  "description": "StatsBot is a discord bot which display server and user statistics made with discord.js and better-sqlite3",
+  "main": "index.js",
+  "dependencies": {
+    "better-sqlite3": "^6.0.1",
+    "discord.js": "^12.0.2",
+    "enmap": "^5.2.4",
+    "fs": "0.0.1-security"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sylv1nv/StatsBot.git"
+  },
+  "keywords": [
+    "discord",
+    "statsbot",
+    "discord",
+    "bot",
+    "statbot",
+    "discord",
+    "server",
+    "statistics"
+  ],
+  "author": "Sylvain V.",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/sylv1nv/StatsBot/issues"
+  },
+  "homepage": "https://github.com/sylv1nv/StatsBot#readme"
+}

@@ -1,0 +1,9 @@
+{
+    "heartbeat": {
+        "low": ["Easy Peasy", "Yay"],
+        "medium": [":zap: Low on Energy, Give me a RedBull", "Get me some PowerRade"],
+        "hight": ["Houston, We may have a problem", "Help ........."]
+    }
+}
+
+
