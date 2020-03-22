@@ -19,7 +19,7 @@ exports.run = async (client, message) => {
 
 exports.conf = {
     name: 'Invite',
-    aliases: ['i', 'share'],
+    aliases: ['i', 'share', 'invite'],
     description: "Invite the bot to your server",
     enabled: true,
     args: false,

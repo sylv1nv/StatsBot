@@ -8,7 +8,7 @@ exports.run = async (client, message) => {
 
     const pong = new Discord.MessageEmbed()
         .setTitle("Pong ! :ping_pong:")
-        .setDescription(`:satellite: Latency is ${msg.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`)
+        .setDescription(`:satellite: Latency is ${msg.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ws.ping)}ms`)
         .setTimestamp()
     await msg.edit(pong)
 
