@@ -1,0 +1,29 @@
+{
+    "token": "",
+    "prefix": ".",
+    "ownerID": "233956539675705344",
+    "invite": {
+        "botToServer": "https://discordapp.com/api/oauth2/authorize?client_id=690247118572486666&permissions=904384&scope=bot",
+        "userToServer": "https://discord.gg/xsAwY3g"
+    },
+
+
+    "version": "1.0.0",
+
+    "github": "https://github.com/sylv1nv/StatsBot",
+
+    "guildID": "606481006366556180",
+
+    "color": {
+        "debug": "#86CA3C",
+        "info": "#00B0F0",
+        "warn": "#FFC000",
+        "error": "#D9680D",
+        "fatal": "#FF0000",
+        "help": "#00AE86"
+    },
+
+    "channel": {
+        "logs": "690327440224157832"
+    }
+}
