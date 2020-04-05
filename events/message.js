@@ -7,6 +7,7 @@ module.exports = (client, message) => {
 
     let msgUserCount;
     let msgServerCount;
+    let msgPlotCount;
 
     if (message.guild) {
 
@@ -37,6 +38,30 @@ module.exports = (client, message) => {
         msgUserCount.msgcount++;
         // Save data to the sqlite table.
         client.setMsgCount.run(msgUserCount);
+
+
+        //PLOTTING MESSAGE ACTIVITY
+        let date = new Date().toISOString().slice(0,-11).toString();
+        msgPlotCount= client.getPlotMsgCount.get(date, message.guild.id);
+        console.log(msgPlotCount);
+        if(!msgPlotCount){
+            msgPlotCount={
+                guild: message.guild.id,
+                time: date,
+                msgCount: 0,
+            }
+        }
+        msgPlotCount.msgCount++;
+        client.setPlotMsgCount.run(msgPlotCount);
+
+
+
+
+
+
+
+
+
     }
 
     if(message.content.length > 1023) return;
