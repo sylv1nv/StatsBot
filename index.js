@@ -5,6 +5,8 @@ const alert = require("./message.json");
 const  SQLite = require("better-sqlite3");
 const sql = new SQLite('./msgStat.sqlite');
 const sqlServer = new SQLite('./serverStats.sqlite');
+const sqlPlot = new SQLite('./plotData.sqlite');
+const sqlGrowth = new SQLite('./growthData.sqlite');
 
 const client = new Discord.Client({
     autoReconnect: true
@@ -18,7 +20,7 @@ client.on('ready', async () => {
     console.log(`Logged in as ${client.user.tag}!`);
 
     let channel = client.channels.cache.find(channel => channel.id === client.config.channel.logs);
-    await channel.setTopic(`Uptime: 0 days 0 hours 0 minutes - Memory usage: 0Mb - Ping: 0ms - Refresh 2min`);
+    await channel.setTopic(`${client.user.username} uptime: 0 days 0 hours 0 minutes - Memory usage: 0Mb - Ping: 0ms - Refresh 2min`);
     let embed = new Discord.MessageEmbed()
         .setTitle('Status')
         .setDescription('Bot is now starting. please wait..')
@@ -82,9 +84,10 @@ client.on('ready', async () => {
         console.log(error);
     }
 
+    //console.log(client.guilds.cache.array().length);
     await client.user.setPresence({
-        game: {
-            name: '' + client.guilds.size + ' servers | ' + client.config.prefix + 'help',
+        activity: {
+            name: '' + client.guilds.cache.array().length + ' servers | ' + client.config.prefix + 'help',
             type: 'WATCHING'
         },
         status: 'online'
@@ -119,6 +122,40 @@ client.on('ready', async () => {
     client.setServerMsgCount = sqlServer.prepare("INSERT OR REPLACE INTO serverStats (guild, memberCount, serverMsgCount) VALUES (@guild, @memberCount, @serverMsgCount);");
 
 
+    const plotTable = sqlPlot.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'messagePlot';").get();
+    if (!plotTable['count(*)']) {
+        // If the table isn't there, create it and setup the database correctly.
+        sqlPlot.prepare("CREATE TABLE messagePlot (time TEXT, guild TEXT, msgCount INT, PRIMARY KEY(time, guild));").run();
+        // Ensure that the "id" row is always unique and indexed.
+        sqlPlot.prepare("CREATE UNIQUE INDEX idx_messagePlot_guildTime ON messagePlot (time, guild);").run();
+        sqlPlot.pragma("synchronous = 1");
+        sqlPlot.pragma("journal_mode = wal");
+    }
+
+    // And then we have two prepared statements to get and set the score data.
+    client.getPlotMsgCount = sqlPlot.prepare("SELECT * FROM messagePlot WHERE time = ? AND guild = ?");
+    client.setPlotMsgCount = sqlPlot.prepare("INSERT OR REPLACE INTO messagePlot (guild, time, msgCount) VALUES (@guild, @time, @msgCount);");
+    client.allPlotMsgCount = sqlPlot.prepare("SELECT * FROM messagePlot WHERE guild = ? ORDER BY time ASC");
+
+
+    const growthTable = sqlGrowth.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'growthPlot';").get();
+    if (!growthTable['count(*)']) {
+        // If the table isn't there, create it and setup the database correctly.
+        sqlGrowth.prepare("CREATE TABLE growthPlot (time TEXT, guild TEXT, memberCount INT, PRIMARY KEY(time, guild));").run();
+        // Ensure that the "id" row is always unique and indexed.
+        sqlGrowth.prepare("CREATE UNIQUE INDEX idx_growthPlot_guildTime ON growthPlot (time, guild);").run();
+        sqlGrowth.pragma("synchronous = 1");
+        sqlGrowth.pragma("journal_mode = wal");
+    }
+
+    // And then we have two prepared statements to get and set the score data.
+    client.getGrowthCount = sqlGrowth.prepare("SELECT * FROM growthPlot WHERE time = ? AND guild = ?");
+    client.setGrowthCount = sqlGrowth.prepare("INSERT OR REPLACE INTO growthPlot (guild, time, memberCount) VALUES (@guild, @time, @memberCount);");
+    client.allGrowthCount = sqlGrowth.prepare("SELECT * FROM growthPlot WHERE guild = ? ORDER BY time ASC");
+
+
+
+
 });
 
 
@@ -151,7 +188,7 @@ setInterval(() => {
         days += 1;
     }
     let channel = client.channels.cache.find(channel => channel.id === client.config.channel.logs);
-    channel.setTopic(`Uptime: ${days} days ${hours} hours ${minutes} minutes - Memory usage: ${Math.round(used * 100) / 100}Mb - Ping: ${ping}ms - Refresh 2min`).catch(console.error);
+    channel.setTopic(`${client.user.username} uptime: ${days} days ${hours} hours ${minutes} minutes - Memory usage: ${Math.round(used * 100) / 100}Mb - Ping: ${ping}ms - Refresh 2min`).catch(console.error);
 
 }, 120000);
 
