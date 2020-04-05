@@ -68,6 +68,6 @@ exports.conf = {
     enabled: true,
     args: true,
     usage: 'since <UserID>',
-    permissions: 'KICK_MEMBERS',
+    permissions: 'SEND_MESSAGES',
     friendlyLevel: 0,
 }
