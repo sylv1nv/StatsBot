@@ -7,8 +7,6 @@ StatsBot is a discord bot which display server and user statistics made with dis
 - Plotting Server Member Growth 
 - Plotting Server Message Activity 
 
-The bot is host online, you can add it to your server with this [link](https://discordapp.com/api/oauth2/authorize?client_id=690247118572486666&permissions=904384&scope=bot)
-
 If you want to contribute, you can make a commit, and join the discord server [here](https://discord.gg/xsAwY3g)
 
 
